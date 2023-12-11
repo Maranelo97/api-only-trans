@@ -38,3 +38,21 @@ exports.loginUser = (req, res) => {
     );
   });
 };
+
+
+exports.createUser = (req, res) => {
+  req.getConnection((err, conn) => {
+      if (err) return res.send(err);
+
+      const userData = {
+          password: req.body.password,
+          username: req.body.username
+      };
+
+      conn.query('INSERT INTO usuarios SET ?', [userData], (err, result) => {
+          if (err) return res.send(err);
+
+          res.send('Usuario creado exitosamente');
+      });
+  });
+};

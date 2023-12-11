@@ -20,6 +20,10 @@ app.use(express.json());
 
 app.use("/",route);
 
+app.get("/", (req, res) => {
+    res.send("MAURI GATO, no mentira amigo te quiero <3")
+})
+
 app.listen(PORT, () => {
     console.log("server Running on port " + PORT)
 })
