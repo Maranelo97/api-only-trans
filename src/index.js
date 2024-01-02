@@ -16,9 +16,9 @@ const dbConfig = {
     database: process.env.DB_NAME || "onlytransdb"
 }
 
+app.use(cors());
 app.use(conn(mysql, dbConfig, "single"))
 
-app.use(cors());
 app.use(express.json());
 
 app.use("/",route);
