@@ -28,7 +28,7 @@ exports.loginUser = (req, res) => {
         }
 
         if (results.length > 0) {
-          const user = results.length[0].username
+          const user = results[0].username
           res.json({ message: "Inicio de sesión exitoso", user});
         } else {
           res.status(401).json({ error: "Credenciales incorrectas" });
