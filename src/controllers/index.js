@@ -66,7 +66,7 @@ exports.update = (req, res) => {
     const updateUserQuery = `
           UPDATE usuarios 
           SET 
-          username = ?,
+          username = ?
           WHERE id = ?`;
 
     conn.query(updateUserQuery, [username, id], (err, result) => {
