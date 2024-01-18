@@ -28,8 +28,8 @@ exports.loginUser = (req, res) => {
         }
 
         if (results.length > 0) {
-          const user = results[0].username
-          res.json({ message: "Inicio de sesión exitoso", user});
+          const user = results[0].username;
+          res.json({ message: "Inicio de sesión exitoso", user });
         } else {
           res.status(401).json({ error: "Credenciales incorrectas" });
         }
@@ -52,5 +52,50 @@ exports.createUser = (req, res) => {
 
       res.send("Usuario creado exitosamente");
     });
+  });
+};
+
+exports.update = (req, res) => {
+  req.getConnection((err, conn) => {
+    if (err)
+      return res.status(500).json({ error: "Error interno del servidor" });
+
+    const { id } = req.params;
+    const { username } = req.body;
+
+    const updateUserQuery = `
+          UPDATE usuarios 
+          SET 
+          username = ?,
+          WHERE id = ?`;
+
+    conn.query(updateUserQuery, [username, id], (err, result) => {
+      if (err) {
+        console.error("Error al actualizar los datos:", err);
+        return res.status(500).json({ error: "Error interno del servidor" });
+      }
+
+      if (result.affectedRows > 0) {
+        res.json({ message: "Datos actualizados exitosamente" });
+      } else {
+        res.status(404).json({ error: "Usuario no encontrado" });
+      }
+    });
+  });
+};
+
+exports.deleteUser = (req, res) => {
+  req.getConnection((err, connect) => {
+    if (err) return res.send(err);
+
+    connect.query(
+      "DELETE FROM usuarios WHERE id = ?",
+      [req.params.id],
+      (err, result) => {
+        if (err) return res.send(err);
+
+        res.send("Eliminado con exito");
+      }
+    );
   });
 };
